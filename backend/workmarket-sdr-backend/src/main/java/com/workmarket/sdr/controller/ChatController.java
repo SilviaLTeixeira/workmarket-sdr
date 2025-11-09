@@ -29,10 +29,8 @@ public class ChatController {
         String sessionId = request.getSessionId();
         String userMessage = request.getMessage();
 
-        // 1) Resposta da IA local (Ollama)
-        String aiReply = llmService.generateReply(sessionId, userMessage);
+        ChatMessageResponse aiReply = llmService.generateReply(sessionId, userMessage);
 
-        // 2) Lead ainda de exemplo – depois vamos popular de verdade
         Lead lead = new Lead();
         lead.setNome("Lead de Teste");
         lead.setEmail("teste@example.com");
@@ -42,10 +40,6 @@ public class ChatController {
 
         pipefyService.saveOrUpdateLead(lead);
 
-        // 3) Devolve pro frontend
-        ChatMessageResponse response =
-                new ChatMessageResponse(aiReply, false, null);
-
-        return ResponseEntity.ok(response);
+        return ResponseEntity.ok(aiReply);
     }
 }
